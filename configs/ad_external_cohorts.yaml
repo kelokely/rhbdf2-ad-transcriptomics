@@ -1,0 +1,211 @@
+study_name: independent_multicell_ad_extension
+registry_version: 1
+gene_of_interest: RHBDF2
+
+canonical_metadata:
+  donor_column: donor_id
+  pathology_column: pathology
+  cell_type_column: cell_type
+  subpopulation_column: subpopulation
+  region_column: brain_region
+
+cohorts:
+  GSE138852:
+    title: A single-cell atlas of the human entorhinal cortex in Alzheimer disease
+    access: public
+    role: regional_descriptive_sensitivity
+    technology: snRNA-seq
+    tissue: entorhinal cortex
+    nominal_donors: 12
+    donor_inference_eligible: false
+    donor_ineligibility_reason: Individual cells cannot be assigned to donors because two donors were pooled per 10x library.
+    adapter: gse138852_csv
+    source_directory: data/external_ad_cohorts/GSE138852/source
+    prepared_path: data/external_ad_cohorts/GSE138852/processed/GSE138852_canonical.h5ad
+    sources:
+      - url: https://ftp.ncbi.nlm.nih.gov/geo/series/GSE138nnn/GSE138852/suppl/GSE138852_counts.csv.gz
+        filename: GSE138852_counts.csv.gz
+        expected_size_bytes: 12466052
+      - url: https://ftp.ncbi.nlm.nih.gov/geo/series/GSE138nnn/GSE138852/suppl/GSE138852_covariates.csv.gz
+        filename: GSE138852_covariates.csv.gz
+        expected_size_bytes: 86792
+
+  GSE157827:
+    title: Single-nucleus transcriptome analysis of Alzheimer prefrontal cortex
+    access: public
+    role: rapid_independent_multicell_replication
+    technology: snRNA-seq
+    tissue: prefrontal cortex
+    nominal_donors: 21
+    donor_inference_eligible: true
+    adapter: geo_10x_tar_marker_annotation
+    source_directory: data/external_ad_cohorts/GSE157827/source
+    prepared_path: data/external_ad_cohorts/GSE157827/processed/GSE157827_canonical.h5ad
+    sources:
+      - url: https://ftp.ncbi.nlm.nih.gov/geo/series/GSE157nnn/GSE157827/suppl/GSE157827_RAW.tar
+        filename: GSE157827_RAW.tar
+        expected_size_bytes: 1313280000
+
+  SEAAD_MTG:
+    title: Seattle Alzheimer Disease Brain Cell Atlas middle temporal gyrus
+    access: public
+    role: primary_large_independent_multicell_replication
+    technology: snRNA-seq
+    tissue: middle temporal gyrus
+    nominal_donors: 84
+    donor_inference_eligible: true
+    adapter: seaad_h5ad
+    matrix_scope: targeted_candidate_program_and_identity_genes_from_author_UMI_layer
+    source_directory: data/external_ad_cohorts/SEAAD_MTG/source
+    prepared_path: data/external_ad_cohorts/SEAAD_MTG/processed/SEAAD_MTG_targeted_canonical.h5ad
+    sources:
+      - url: https://sea-ad-single-cell-profiling.s3.amazonaws.com/MTG/RNAseq/SEAAD_MTG_RNAseq_final-nuclei.2026-06-22.h5ad
+        filename: SEAAD_MTG_RNAseq_final-nuclei.2026-06-22.h5ad
+        expected_size_bytes: 32978570763
+
+  GSE237718:
+    title: APOE genotype-dependent cell-type pathology in Alzheimer temporal cortex
+    access: public
+    role: apoe_stratified_independent_replication
+    technology: snRNA-seq
+    tissue: temporal cortex
+    nominal_donors: 56
+    donor_inference_eligible: true
+    adapter: geo_10x_tar_marker_annotation
+    source_directory: data/external_ad_cohorts/GSE237718/source
+    prepared_path: data/external_ad_cohorts/GSE237718/processed/GSE237718_canonical.h5ad
+    sources:
+      - url: https://ftp.ncbi.nlm.nih.gov/geo/series/GSE237nnn/GSE237718/suppl/GSE237718_RAW.tar
+        filename: GSE237718_RAW.tar
+        expected_size_bytes: 5073592320
+      - url: https://ftp.ncbi.nlm.nih.gov/geo/series/GSE237nnn/GSE237718/miniml/GSE237718_family.xml.tgz
+        filename: GSE237718_family.xml.tgz
+        expected_size_bytes: 7841
+
+  GSE268599:
+    title: Astrocyte transcriptomic changes across Alzheimer disease progression
+    access: public
+    role: powered_astrocyte_multiregion_replication
+    technology: snRNA-seq
+    tissue: five brain regions
+    nominal_donors: 32
+    donor_inference_eligible: true
+    analysis_strata: brain_region
+    matrix_scope: targeted_candidate_program_and_identity_genes
+    cell_type_selection: strict_then_author_count_calibrated_marker_rank
+    sensitivity_subsets:
+      - label: strict_marker_only
+        column: astrocyte_selection_tier
+        value: strict_marker
+    adapter: gse268599_astrocyte_tar
+    source_directory: data/external_ad_cohorts/GSE268599/source
+    prepared_path: data/external_ad_cohorts/GSE268599/processed/GSE268599_canonical.h5ad
+    sources:
+      - url: https://ftp.ncbi.nlm.nih.gov/geo/series/GSE268nnn/GSE268599/suppl/GSE268599_RAW.tar
+        filename: GSE268599_RAW.tar
+        expected_size_bytes: 10921963520
+      - url: https://ftp.ncbi.nlm.nih.gov/geo/series/GSE268nnn/GSE268599/miniml/GSE268599_family.xml.tgz
+        filename: GSE268599_family.xml.tgz
+        expected_size_bytes: 20871
+      - url: https://static-content.springer.com/esm/art%3A10.1038%2Fs41593-024-01791-4/MediaObjects/41593_2024_1791_MOESM3_ESM.xlsx
+        filename: GSE268599_supplementary_data1.xlsx
+        expected_size_bytes: 34754
+
+  GSE269906:
+    title: Stereo-seq spatial transcriptomics of Alzheimer and control prefrontal cortex
+    access: public
+    role: spatial_localization_support
+    technology: Stereo-seq spatial transcriptomics
+    tissue: prefrontal cortex BA10
+    nominal_donors: 12
+    donor_inference_eligible: true
+    analysis_mode: spatial_support_only
+    matrix_scope: cell-bin spatial expression with x-y coordinates
+    adapter: gse269906_stereo_cellbin_gef
+    source_directory: data/external_ad_cohorts/GSE269906/source
+    prepared_path: data/external_ad_cohorts/GSE269906/processed/GSE269906_spatial_targeted.h5ad
+    sources:
+      - url: https://ftp.ncbi.nlm.nih.gov/geo/series/GSE269nnn/GSE269906/suppl/GSE269906_RAW.tar
+        filename: GSE269906_RAW.tar
+        expected_size_bytes: 15148380160
+      - url: https://ftp.ncbi.nlm.nih.gov/geo/series/GSE269nnn/GSE269906/miniml/GSE269906_family.xml.tgz
+        filename: GSE269906_family.xml.tgz
+        expected_size_bytes: 4133
+
+  ROSMAP_MULTI_REGION:
+    title: Single-cell multiregion dissection of Alzheimer disease
+    access: controlled
+    role: multiregion_donor_replication
+    technology: snRNA-seq
+    tissue: six brain regions
+    nominal_donors: 48
+    donor_inference_eligible: true
+    adapter: rosmap_synapse_h5ad
+    synapse_accession: syn52293442
+    study_accession: syn52293417
+    prepared_path: data/external_ad_cohorts/ROSMAP_MULTI_REGION/source/rosmap_multiregion.h5ad
+    access_note: A ROSMAP or Sage data-use agreement and authenticated Synapse download are required.
+
+candidate_genes:
+  - RHBDF2
+  - ADAM17
+  - TREM2
+  - TYROBP
+  - SYK
+  - FCER1G
+  - ITGAX
+  - CLEC7A
+  - CST7
+  - LPL
+  - APOE
+  - GPNMB
+  - IL6R
+  - TNF
+  - TBK1
+  - IRF3
+  - RELA
+  - NFKBIA
+  - CTSB
+  - CTSD
+  - LAMP1
+  - LAMP2
+  - HEXB
+  - C3
+  - CLU
+  - GFAP
+  - AQP4
+  - SLC1A3
+  - ALDH1L1
+  - MBP
+  - PLP1
+  - MOG
+  - PDGFRA
+  - OLIG1
+  - OLIG2
+  - RBFOX3
+  - SNAP25
+  - SYT1
+  - CLDN5
+  - PECAM1
+  - VWF
+  - RGS5
+  - PDGFRB
+
+eligibility:
+  minimum_cells: 500
+  minimum_detected_cells: 50
+  minimum_donors: 5
+  minimum_donors_with_detection: 5
+
+programs:
+  irhom2_adam17_context: [ADAM17, TNF, IL6R, TREM2]
+  trem2_tyrobp_syk: [TREM2, TYROBP, SYK, FCER1G, CLEC7A, ITGAX, CST7, LPL]
+  lysosomal_phagocytic: [CTSB, CTSD, LAMP1, LAMP2, HEXB, GPNMB, APOE]
+  inflammatory_nfkb: [TNF, IL6R, RELA, NFKBIA, IL1B, JUN, FOS]
+  sting_tbk1_irf3: [TMEM173, TBK1, IRF3, IFIT1, IFIT3, ISG15, CXCL10]
+  astrocyte_reactive: [GFAP, C3, APOE, CLU, SERPINA3, SLC1A3]
+  astrocyte_homeostatic: [AQP4, ALDH1L1, SLC1A3, SLC6A11, GLUL]
+  oligodendrocyte_identity: [MBP, PLP1, MOG, MOBP, MAG]
+  opc_identity: [PDGFRA, CSPG4, OLIG1, OLIG2, SOX10]
+  neuronal_synaptic: [RBFOX3, SNAP25, SYT1, SLC17A7, GAD1]
+  vascular_identity: [CLDN5, PECAM1, VWF, KDR, RGS5, PDGFRB]

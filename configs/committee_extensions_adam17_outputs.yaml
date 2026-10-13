@@ -1,0 +1,189 @@
+study_name: committee_dual_anchor_adam17_output_extension
+output_dir: results/committee_extensions/adam17_output_expansion
+anchors: [RHBDF2, ADAM17]
+
+thresholds:
+  minimum_cells: 300
+  minimum_detected_cells: 30
+  minimum_donors: 5
+  minimum_donors_with_detection: 5
+  minimum_cells_per_donor: 20
+  minimum_donors_per_metadata_level: 4
+  minimum_residual_degrees_freedom: 5
+
+cohorts:
+  GSE243292:
+    path: data/raw/GSE243292_ADsnRNAseq_GEO.h5ad
+    cell_type_column: final_celltype
+    donor_column: sampleID
+    pathology_column: atscore
+    matrix_scope: full_transcriptome
+    populations:
+      Microglia: Mic
+      Endothelial cells: End
+    metadata_variables: [atscore, apoe, trem2]
+  GSE157827:
+    path: data/external_ad_cohorts/GSE157827/processed/GSE157827_canonical.h5ad
+    cell_type_column: cell_type
+    donor_column: donor_id
+    pathology_column: pathology
+    matrix_scope: full_transcriptome
+    populations:
+      Microglia: Microglia
+      Endothelial cells: Endothelial cells
+    metadata_variables: [pathology]
+  GSE237718:
+    path: data/external_ad_cohorts/GSE237718/processed/GSE237718_canonical.h5ad
+    cell_type_column: cell_type
+    donor_column: donor_id
+    pathology_column: pathology
+    matrix_scope: full_transcriptome
+    populations:
+      Microglia: Microglia
+      Endothelial cells: Endothelial cells
+    metadata_variables: [pathology, sex, apoe_genotype]
+  SEAAD_MTG:
+    path: data/external_ad_cohorts/SEAAD_MTG/processed/SEAAD_MTG_adam17_outputs_canonical.h5ad
+    cell_type_column: cell_type
+    donor_column: donor_id
+    pathology_column: pathology
+    matrix_scope: targeted_panel
+    populations:
+      Microglia mapped immune: Microglia
+      Endothelial cells: Endothelial cells
+    metadata_variables:
+      - pathology
+      - cognitive_status
+      - sex
+      - apoe_genotype
+      - age_at_death
+      - overall_ad_neuropathological_change
+      - thal
+      - braak
+      - cerad_score
+      - pmi
+      - rin
+
+primary_runs:
+  - [GSE243292, Microglia]
+  - [GSE157827, Microglia]
+  - [GSE157827, Endothelial cells]
+  - [GSE237718, Microglia]
+  - [GSE237718, Endothelial cells]
+  - [SEAAD_MTG, Endothelial cells]
+
+strict_seaad_myeloid:
+  cohort: SEAAD_MTG
+  source_subpopulation_column: subpopulation
+  include_prefixes: [Micro-PVM]
+  include_exact: [Monocyte]
+  exclude_exact: [Lymphocyte]
+  leave_one_subpopulation_out_minimum_cells: 200
+
+candidate_genes:
+  - RHBDF2
+  - ADAM17
+  - TREM2
+  - TYROBP
+  - SYK
+  - FCER1G
+  - ITGAX
+  - CLEC7A
+  - CST7
+  - LPL
+  - APOE
+  - GPNMB
+  - IL6R
+  - TNF
+  - TNFRSF1A
+  - TNFRSF1B
+  - EGFR
+  - TBK1
+  - IRF3
+  - RELA
+  - NFKBIA
+  - CTSB
+  - CTSD
+  - LAMP1
+  - LAMP2
+  - HEXB
+  - CLDN5
+  - PECAM1
+  - VWF
+  - KDR
+  - FLT1
+  - EMCN
+  - RAMP2
+  - CA4
+  - MFSD2A
+  - SLC2A1
+  - ABCB1
+  - OCLN
+  - TJP1
+  - VCAM1
+  - ICAM1
+  - SELE
+  - ACKR1
+  - PLVAP
+  - RGS5
+  - PDGFRB
+  - CSPG4
+  - IL1R2
+  - SELL
+  - CSF1R
+  - MERTK
+  - CX3CL1
+  - JAM3
+  - TGFA
+  - HBEGF
+  - AREG
+  - EREG
+  - IL6ST
+  - CX3CR1
+  - APP
+  - CSF1
+
+# These families distinguish known or plausible cleavage substrates from RNA-only
+# pathway readouts. Membership does not imply cleavage in the analyzed donors.
+adam17_output_families:
+  inflammatory_shedding:
+    genes: [TNF, TNFRSF1A, TNFRSF1B, IL6R, IL1R2, SELL]
+    evidence_class: curated_or_literature_supported_adam17_substrate
+  microglial_brain_shedding:
+    genes: [TREM2, CSF1R, MERTK, CX3CL1, JAM3]
+    evidence_class: curated_or_literature_supported_adam17_substrate
+  egfr_ligand_shedding:
+    genes: [TGFA, HBEGF, AREG, EREG]
+    evidence_class: curated_adam17_egfr_ligand_substrate
+  receptor_signaling_readouts:
+    genes: [IL6ST, CX3CR1, TYROBP, SYK, RELA, NFKBIA, EGFR]
+    evidence_class: transcript_readout_not_cleavage_measurement
+  additional_axis_context:
+    genes: [APP, CSF1]
+    evidence_class: contextual_axis_gene_not_adam17_specific_activity_readout
+
+programs:
+  irhom2_adam17_context: [RHBDF2, ADAM17, TNF, IL6R, TREM2]
+  trem2_tyrobp_syk: [TREM2, TYROBP, SYK, FCER1G, CLEC7A, ITGAX, CST7, LPL]
+  lysosomal_phagocytic: [CTSB, CTSD, LAMP1, LAMP2, HEXB, GPNMB, APOE]
+  inflammatory_nfkb: [TNF, IL6R, RELA, NFKBIA]
+  sting_tbk1_irf3: [TBK1, IRF3]
+  endothelial_identity_bbb: [CLDN5, PECAM1, VWF, KDR, FLT1, EMCN, RAMP2, CA4, MFSD2A, SLC2A1, ABCB1, OCLN, TJP1]
+  endothelial_activation_adhesion: [VCAM1, ICAM1, SELE, ACKR1, PLVAP]
+  adam17_substrate_signaling: [TNF, TNFRSF1A, TNFRSF1B, IL6R, EGFR, TREM2]
+  adam17_inflammatory_shedding: [TNF, TNFRSF1A, TNFRSF1B, IL6R, IL1R2, SELL]
+  adam17_microglial_brain_shedding: [TREM2, CSF1R, MERTK, CX3CL1, JAM3]
+  adam17_egfr_ligand_shedding: [TGFA, HBEGF, AREG, EREG]
+  adam17_receptor_signaling_readout: [IL6ST, CX3CR1, TYROBP, SYK, RELA, NFKBIA, EGFR]
+
+enrichment:
+  enabled: true
+  cohorts: [GSE157827, GSE237718]
+  population: Endothelial cells
+  top_genes_per_direction: 200
+  gprofiler_sources: [GO:BP, REAC, KEGG, WP]
+  enrichr_libraries: [MSigDB_Hallmark_2020, Reactome_2022, GO_Biological_Process_2023]
+  max_terms_report: 10
+
+figures:
+  dpi: 600

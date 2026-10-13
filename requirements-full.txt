@@ -1,0 +1,9 @@
+-r requirements-core.txt
+gprofiler-official
+gseapy
+openpyxl
+requests
+statsmodels
+h5py
+networkx
+Pillow

@@ -1,0 +1,28 @@
+output_dir: results/JAD_revision_2026-10-12
+report_dir: report/jad_revised_manuscript_2026-10-12
+minimum_cells: 20
+sensitivity_minimum_cells: 50
+minimum_donors: 8
+minimum_population_cells: 500
+minimum_anchor_detected_cells: 50
+minimum_donors_with_detection: 5
+minimum_residual_df: 5
+covariance: HC3
+anchors: [RHBDF2, ADAM17]
+registry: configs/ad_external_cohorts.yaml
+inflammation: configs/tnf_cross_species.yaml
+expanded_registry: configs/committee_extensions_adam17_outputs.yaml
+metadata_fields: [condition, age, age_at_death, sex, apoe_genotype, braak_stage, braak, cerad_stage, cerad_score, thal, cognitive_status, rin, pmi, brain_ph, years_of_education, last_casi_score, last_mmse_score, last_moca_score, overall_caa_score, highest_lewy_body_disease]
+enrichment:
+  enabled: true
+  library: MSigDB_Hallmark_2020
+  permutations: 1000
+  seed: 20261012
+  minimum_genes: 15
+  maximum_genes: 500
+mouse_qc:
+  minimum_detected_genes: 500
+  minimum_assigned_gene_counts: 5000
+  sensitivity_maximum_assigned_gene_counts: 700000
+  primary_region: cortex
+  sensitivity_regions: [hippocampus, cerebellum]

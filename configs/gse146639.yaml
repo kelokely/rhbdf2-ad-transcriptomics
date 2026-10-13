@@ -1,0 +1,207 @@
+dataset_name: GSE146639
+input_path: data/raw/GSE146639_barcoded_smartseq2_microglia.h5ad
+output_root: results
+report_root: reports
+run_name: GSE146639_run
+overwrite_existing_run: true
+
+gene_of_interest: RHBDF2
+
+candidate_genes:
+  - RHBDF2
+  - ADAM17
+  - TREM2
+  - TYROBP
+  - SYK
+  - TMEM173
+  - TBK1
+  - IRF3
+  - RELA
+  - TNF
+  - IL6R
+  - ITGAX
+  - CLEC7A
+  - CST7
+  - LPL
+
+metadata:
+  diagnosis_column: diagnosis
+  cluster_column: null
+  donor_column: donor_id
+
+state_definition:
+  method: median
+  quantile: 0.75
+  new_column_name: RHBDF2_state
+  high_label: RHBDF2_high
+  low_label: RHBDF2_low
+
+preprocessing:
+  matrix_source: X
+  layer_name: null
+  normalize_total: true
+  target_sum: 10000
+  log1p: true
+
+differential_expression:
+  method: wilcoxon
+  group_column: RHBDF2_state
+  group_a: RHBDF2_high
+  group_b: RHBDF2_low
+  top_n_export: 100
+
+pseudobulk:
+  enabled: true
+  donor_column: donor_id
+  group_column: RHBDF2_state
+  group_a: RHBDF2_high
+  group_b: RHBDF2_low
+  paired_only: true
+  min_cells_per_sample: 20
+  min_donors_per_group: 3
+  normalization_target_sum: 1000000
+  top_n_export: 100
+  within_subpopulation: false
+  subgroup_column: null
+  min_cells_per_subpopulation: 100
+
+enrichment:
+  enabled: true
+  organism: hsapiens
+  sources:
+    - GO:BP
+    - GO:MF
+    - GO:CC
+    - REAC
+    - KEGG
+    - WP
+  user_threshold: 0.05
+  significance_threshold_method: g_SCS
+  domain_scope: custom
+  use_dataset_background: true
+  no_iea: false
+  max_terms_report: 5
+
+enrichr:
+  enabled: true
+  organism: human
+  libraries:
+    - MSigDB_Hallmark_2020
+    - Azimuth_Cell_Types_2021
+    - CellMarker_2024
+    - PanglaoDB_Augmented_2021
+  cutoff: 0.05
+  use_dataset_background: true
+  max_terms_report: 5
+
+evidence:
+  enabled: true
+  metadata_association_columns:
+    - diagnosis
+    - donor_id
+    - sample_id
+    - technology
+  module_weights:
+    cell_level: 1.0
+    pseudobulk: 3.0
+    continuous: 2.0
+    detection: 1.0
+    positive_expression: 1.0
+    subpopulation_pseudobulk: 2.0
+    protein_context: 1.0
+    public_proteomics_overlap: 1.5
+    genetics: 1.5
+    brain_context: 1.0
+
+continuous_evidence:
+  enabled: true
+  donor_column: donor_id
+  top_n_export: 100
+  min_positive_cells: 25
+
+pathway_activity_proxy:
+  enabled: true
+  donor_column: donor_id
+  min_genes_present: 2
+  gene_sets:
+    trem2_tyrobp_syk_response:
+      - TREM2
+      - TYROBP
+      - SYK
+      - ITGAX
+      - CLEC7A
+      - CST7
+      - LPL
+      - FCER1G
+    inflammatory_nfkb:
+      - TNF
+      - IL6R
+      - RELA
+      - NFKBIA
+      - IL1B
+      - JUN
+      - FOS
+      - CCL2
+    phagocytosis_myeloid:
+      - TREM2
+      - TYROBP
+      - ITGAX
+      - CLEC7A
+      - LPL
+      - CST7
+      - CTSB
+      - AXL
+    lysosomal_activation:
+      - CTSB
+      - CTSD
+      - LAMP1
+      - LAMP2
+      - HEXB
+      - APOE
+      - GPNMB
+      - CSTA
+    sting_tbk1_irf3_response:
+      - TMEM173
+      - TBK1
+      - IRF3
+      - RELA
+      - IFIT1
+      - IFIT3
+      - ISG15
+      - CXCL10
+
+protein_evidence:
+  enabled: true
+  organism_id: 9606
+  reviewed_only: true
+  timeout_seconds: 30
+
+genetics_evidence:
+  enabled: true
+  disease_focus_label: Alzheimer's disease
+  disease_keywords:
+    - alzheimer
+    - dementia
+    - cognitive
+    - neurodegenerative
+  gwas_trait_page_size: 500
+  gwas_association_page_size: 200
+  gwas_max_association_pages: 5
+  opentargets_page_size: 500
+  timeout_seconds: 30
+
+brain_context_evidence:
+  enabled: true
+  context_label: Alzheimer's disease brain proteomics
+  expression_atlas_experiment: E-PROT-61
+  case_labels:
+    - Alzheimer's disease
+  control_labels:
+    - normal
+  timeout_seconds: 30
+
+plots:
+  save_umap_if_available: false
+  save_violin: true
+  save_dotplot: true
+  save_matrixplot: true

@@ -1,0 +1,91 @@
+study_name: seaad_adam17_output_targeted_preparation
+registry_version: 1
+gene_of_interest: RHBDF2
+
+cohorts:
+  SEAAD_MTG:
+    title: Seattle Alzheimer Disease Brain Cell Atlas middle temporal gyrus
+    access: public
+    role: targeted_adam17_output_validation
+    technology: snRNA-seq
+    tissue: middle temporal gyrus
+    nominal_donors: 84
+    donor_inference_eligible: true
+    adapter: seaad_h5ad
+    matrix_scope: targeted_candidate_program_and_adam17_output_genes_from_author_UMI_layer
+    source_directory: data/external_ad_cohorts/SEAAD_MTG/source
+    prepared_path: data/external_ad_cohorts/SEAAD_MTG/processed/SEAAD_MTG_adam17_outputs_canonical.h5ad
+    sources:
+      - url: https://sea-ad-single-cell-profiling.s3.amazonaws.com/MTG/RNAseq/SEAAD_MTG_RNAseq_final-nuclei.2026-06-22.h5ad
+        filename: SEAAD_MTG_RNAseq_final-nuclei.2026-06-22.h5ad
+        expected_size_bytes: 32978570763
+
+candidate_genes:
+  - RHBDF2
+  - ADAM17
+  - TREM2
+  - TYROBP
+  - SYK
+  - FCER1G
+  - ITGAX
+  - CLEC7A
+  - CST7
+  - LPL
+  - APOE
+  - GPNMB
+  - IL6R
+  - TNF
+  - TNFRSF1A
+  - TNFRSF1B
+  - EGFR
+  - TBK1
+  - IRF3
+  - RELA
+  - NFKBIA
+  - CTSB
+  - CTSD
+  - LAMP1
+  - LAMP2
+  - HEXB
+  - CLDN5
+  - PECAM1
+  - VWF
+  - KDR
+  - FLT1
+  - EMCN
+  - RAMP2
+  - CA4
+  - MFSD2A
+  - SLC2A1
+  - ABCB1
+  - OCLN
+  - TJP1
+  - VCAM1
+  - ICAM1
+  - SELE
+  - ACKR1
+  - PLVAP
+  - RGS5
+  - PDGFRB
+  - CSPG4
+  - IL1R2
+  - SELL
+  - CSF1R
+  - MERTK
+  - CX3CL1
+  - JAM3
+  - TGFA
+  - HBEGF
+  - AREG
+  - EREG
+  - IL6ST
+  - CX3CR1
+  - APP
+  - CSF1
+
+programs:
+  adam17_inflammatory_shedding: [TNF, TNFRSF1A, TNFRSF1B, IL6R, IL1R2, SELL]
+  adam17_microglial_brain_shedding: [TREM2, CSF1R, MERTK, CX3CL1, JAM3]
+  adam17_egfr_ligand_shedding: [TGFA, HBEGF, AREG, EREG]
+  adam17_receptor_signaling_readout: [IL6ST, CX3CR1, TYROBP, SYK, RELA, NFKBIA, EGFR]
+  additional_axis_context: [APP, CSF1]

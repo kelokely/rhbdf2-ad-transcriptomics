@@ -1,0 +1,71 @@
+study_name: tnf_inflammatory_human_mouse_extension
+output_dir: results/tnf_cross_species
+minimum_cells_per_sample: 20
+minimum_samples_per_analysis: 6
+minimum_genes_per_module: 4
+minimum_module_fraction: 0.5
+minimum_donor_detection_fraction: 0.15
+
+# Direct transcript checks are separate from the multi-gene RNA modules.
+direct_gene_checks: [TNF, TNFRSF1A, TNFRSF1B, NFKBIA, TNFAIP3, IL1B, IL6, IL6R, TREM2, TYROBP, SYK, ADAM17]
+
+# These are investigator-defined RNA response/context panels, not measurements of
+# cytokine release, NF-kappaB activation, or ADAM17 substrate cleavage.
+# RHBDF2/ADAM17 are removed automatically when either is used as an anchor.
+modules:
+  tnf_ligand_receptor_context: [TNF, TNFRSF1A, TNFRSF1B, ADAM17, IL6R, IL6ST, IL1R2, SELL]
+  tnf_nfkb_response: [NFKBIA, TNFAIP3, BIRC3, TRAF1, RELB, ICAM1, CCL2, CCL5, CXCL10, PTGS2, JUNB, NFKB2]
+  tnf_feedback_survival: [TNFAIP3, NFKBIA, BIRC3, CFLAR, TRAF1, BCL2A1, RELB, NFKB2]
+  il1_inflammasome_context: [IL1B, IL1A, IL1R1, IL1RN, NLRP3, PYCARD, CASP1, NFKBIA, PTGS2]
+  il6_jak_stat_response: [IL6, IL6R, IL6ST, STAT3, SOCS3, CEBPD, JUNB, FOS, OSMR]
+  interferon_response: [STAT1, IRF1, IRF7, ISG15, IFIT1, IFIT3, MX1, OAS1, CXCL10]
+  chemokine_recruitment: [CCL2, CCL3, CCL4, CCL5, CXCL10, CCR1, CXCR4, ICAM1, VCAM1]
+  microglial_phagolysosomal_context: [TREM2, TYROBP, SYK, FCER1G, LPL, CST7, CTSD, LAMP1, GPNMB]
+
+human_cohorts:
+  GSE243292:
+    path: data/raw/GSE243292_ADsnRNAseq_GEO.h5ad
+    cell_type_column: final_celltype
+    donor_column: sampleID
+    pathology_column: atscore
+    populations: {Microglia: Mic}
+  GSE157827:
+    path: data/external_ad_cohorts/GSE157827/processed/GSE157827_canonical.h5ad
+    cell_type_column: cell_type
+    donor_column: donor_id
+    pathology_column: pathology
+    populations: {Microglia: Microglia, Endothelial cells: Endothelial cells}
+  GSE237718:
+    path: data/external_ad_cohorts/GSE237718/processed/GSE237718_canonical.h5ad
+    cell_type_column: cell_type
+    donor_column: donor_id
+    pathology_column: pathology
+    populations: {Microglia: Microglia, Endothelial cells: Endothelial cells}
+  SEAAD_MTG:
+    path: data/external_ad_cohorts/SEAAD_MTG/processed/SEAAD_MTG_adam17_outputs_canonical.h5ad
+    cell_type_column: cell_type
+    donor_column: donor_id
+    pathology_column: pathology
+    populations: {Microglia mapped immune: Microglia, Endothelial cells: Endothelial cells}
+    matrix_scope: targeted_61_genes
+
+mouse:
+  accession: GSE148405
+  matrix_url: https://ftp.ncbi.nlm.nih.gov/geo/series/GSE148nnn/GSE148405/suppl/GSE148405_counts.csv.gz
+  metadata_url: https://ftp.ncbi.nlm.nih.gov/geo/series/GSE148nnn/GSE148405/miniml/GSE148405_family.xml.tgz
+  matrix_path: data/external_mouse_cohorts/GSE148405/source/GSE148405_counts.csv.gz
+  metadata_path: data/external_mouse_cohorts/GSE148405/source/GSE148405_family.xml.tgz
+  prepared_path: data/external_mouse_cohorts/GSE148405/processed/GSE148405_targeted.h5ad
+  primary_region: cortex
+  genotype_control: WT
+  genotype_disease: 5xFAD
+
+orthology:
+  source_url: https://www.informatics.jax.org/downloads/reports/HOM_ProteinCoding.rpt
+  path: data/external_mouse_cohorts/orthology/HOM_ProteinCoding.rpt
+
+secondary_mouse_candidate:
+  accession: GSE140510
+  source_path: data/external_mouse_cohorts/GSE140510/source/GSE140510_RAW.tar
+  source_url: https://ftp.ncbi.nlm.nih.gov/geo/series/GSE140nnn/GSE140510/suppl/GSE140510_RAW.tar
+  readiness: raw_10x_matrices_without_public_cell_type_labels
